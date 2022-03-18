@@ -1,3 +1,4 @@
+import * as uuid from "uuid";
 import handler from "./util/handler";
 import dynamoDb from "./util/dynamodb";
 
@@ -8,8 +9,8 @@ export const main = handler(async (event) => {
         TableName: process.env.TABLE_NAME,
         Item: {
             email: event.requestContext.authorizer.iam.cognitoIdentity.identityId,
-            newsId: data.newsId,
-            userName: data.userName,
+            newsId: uuid.v1(),
+            userName: event.requestContext.authorizer.iam.cognitoIdentity.identityId,
             news: data.news,
             attachment: data.attachment,
             createdAt: Date.now(),

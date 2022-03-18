@@ -1,4 +1,6 @@
-import MyStack from "./MyStack";
+import News from "./NewsStack";
+import ApiStack from "./ApiStack";
+import AuthStack from "./AuthStack";
 
 export default function main(app) {
   // Set default runtime for all functions
@@ -6,7 +8,14 @@ export default function main(app) {
     runtime: "nodejs14.x"
   });
 
-  new MyStack(app, "my-stack");
+  const news = new News(app, "news")
 
-  // Add more stacks
+  const apiStack = new ApiStack(app, "api", {
+    table: news.table,
+  });
+
+  new AuthStack(app, "auth", {
+    api: apiStack.api,
+    bucket: news.bucket,
+  });
 }
